@@ -4,6 +4,7 @@
 #include "GAS_Base/Public/Characters/GFW_BaseCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "Net/UnrealNetwork.h"
 
 AGFW_BaseCharacter::AGFW_BaseCharacter()
 {
@@ -14,9 +15,39 @@ AGFW_BaseCharacter::AGFW_BaseCharacter()
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
+void AGFW_BaseCharacter::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ThisClass, bAlive);
+}
+
 UAbilitySystemComponent* AGFW_BaseCharacter::GetAbilitySystemComponent() const
 {
 	return nullptr;
+}
+
+void AGFW_BaseCharacter::OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData)
+{
+	if (AttributeChangeData.NewValue <= 0.f)
+	{
+		HandleDeath();
+	}
+}
+
+void AGFW_BaseCharacter::HandleDeath()
+{
+	bAlive = false;
+
+	if (IsValid(GEngine))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, FString::Printf(TEXT("%s has died!"), *GetName()));
+	}
+}
+
+void AGFW_BaseCharacter::HandleRespawn()
+{
+	bAlive = true;
 }
 
 void AGFW_BaseCharacter::GiveStartupAbilities()
@@ -30,12 +61,12 @@ void AGFW_BaseCharacter::GiveStartupAbilities()
 	}
 }
 
-void AGFW_BaseCharacter::InitializeAttributes() const
+void AGFW_BaseCharacter::InitAttributes() const
 {
-	checkf(IsValid(InitializeAttributesEffect), TEXT("InitializeAttributesEffect not set."));
+	checkf(IsValid(InitAttributesEffect), TEXT("InitAttributesEffect not set."));
 
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitializeAttributesEffect, 1.f, ContextHandle);
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitAttributesEffect, 1.f, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
 

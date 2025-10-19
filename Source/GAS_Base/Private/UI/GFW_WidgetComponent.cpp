@@ -19,7 +19,7 @@ void UGFW_WidgetComponent::BeginPlay()
 
 	if (!IsASCInit())
 	{
-		GFWCharacter->OnASCInitialized.AddDynamic(this, &ThisClass::OnASCInit);
+		GFWCharacter->OnASCInit.AddDynamic(this, &ThisClass::OnASCInit);
 		return;
 	}
 

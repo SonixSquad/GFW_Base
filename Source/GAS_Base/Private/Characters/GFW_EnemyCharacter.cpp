@@ -36,14 +36,17 @@ void AGFW_EnemyCharacter::BeginPlay()
 	if (!IsValid(GetAbilitySystemComponent())) return;
 
 	GetAbilitySystemComponent()->InitAbilityActorInfo(this, this);
-	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	OnASCInit.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	
 	if (!HasAuthority()) return;
 	
 		GiveStartupAbilities();
-		InitializeAttributes();
+		InitAttributes();
 	
+	UGFW_AttributeSet* GFW_AttributeSet = Cast<UGFW_AttributeSet>(GetAttributeSet());
+	if (!IsValid(GFW_AttributeSet)) return;
 	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GFW_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 

@@ -4,6 +4,7 @@
 #include "GAS_Base/Public/Characters/GFW_PlayerCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/Attributes/GFW_AttributeSet.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -67,9 +68,14 @@ void AGFW_PlayerCharacter::PossessedBy(AController* NewController)
 	if (!IsValid(GetAbilitySystemComponent()) || !HasAuthority()) return;
 
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
-	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	OnASCInit.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	GiveStartupAbilities();
-	InitializeAttributes(); 
+	InitAttributes();
+
+	UGFW_AttributeSet* GFW_AttributeSet = Cast<UGFW_AttributeSet>(GetAttributeSet());
+	if (!IsValid(GFW_AttributeSet)) return;
+	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GFW_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 void AGFW_PlayerCharacter::OnRep_PlayerState()
@@ -77,8 +83,12 @@ void AGFW_PlayerCharacter::OnRep_PlayerState()
 	if (!IsValid(GetAbilitySystemComponent())) return;
 
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
-	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	OnASCInit.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+
+	UGFW_AttributeSet* GFW_AttributeSet = Cast<UGFW_AttributeSet>(GetAttributeSet());
+	if (!IsValid(GFW_AttributeSet)) return;
 	
+	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GFW_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
 
