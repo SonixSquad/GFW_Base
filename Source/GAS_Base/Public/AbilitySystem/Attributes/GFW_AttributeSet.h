@@ -28,7 +28,6 @@ class GAS_BASE_API UGFW_AttributeSet : public UAttributeSet
 
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 

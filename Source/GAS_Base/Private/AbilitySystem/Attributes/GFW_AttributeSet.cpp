@@ -2,6 +2,10 @@
 
 
 #include "AbilitySystem/Attributes/GFW_AttributeSet.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
+#include "GameplayEffectExtension.h"
+#include "GameplayTags/GFWTags.h"
 #include "Net/UnrealNetwork.h"
 
 void UGFW_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -19,12 +23,31 @@ void UGFW_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, Identity, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MaxIdentity, COND_None, REPNOTIFY_Always);
 
-	DOREPLIFETIME(ThisClass, bAttributesInit);
+	//old version, might need to revert at some point but for now this allows debugger to work without crashing
+	//DOREPLIFETIME(ThisClass, bAttributesInit);
+	DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, bAttributesInit, COND_None, REPNOTIFY_Always);
 }
 
 void UGFW_AttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
+	
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute() && GetHealth() <= 0.f)
+	{
+		FGameplayEventData Payload;
+		Payload.Instigator = Data.Target.GetAvatarActor();
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Data.EffectSpec.GetEffectContext().GetInstigator(), GFWTags::Events::KillScored, Payload);
+	}
 
 	if (!bAttributesInit)
 	{

@@ -28,6 +28,17 @@ UAttributeSet* AGFW_EnemyCharacter::GetAttributeSet() const
 	return AttributeSet;
 }
 
+void AGFW_EnemyCharacter::StopMovementUntilLanded()
+{
+	//bIsBeingLaunched = true;
+	//AAIController* AIController = GetController<AAIController>();
+	//if (!IsValid(AIController)) return;
+	//AIController->StopMovement();
+	//if (!LandedDelegate.IsAlreadyBound(this, &ThisClass::EnableMovementOnLanded))
+	//{
+	//	LandedDelegate.AddDynamic(this, &ThisClass::EnableMovementOnLanded);
+	//}
+}
 
 void AGFW_EnemyCharacter::BeginPlay()
 {
@@ -42,6 +53,7 @@ void AGFW_EnemyCharacter::BeginPlay()
 	
 		GiveStartupAbilities();
 		InitAttributes();
+		SetIdentity();
 	
 	UGFW_AttributeSet* GFW_AttributeSet = Cast<UGFW_AttributeSet>(GetAttributeSet());
 	if (!IsValid(GFW_AttributeSet)) return;

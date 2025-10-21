@@ -20,7 +20,7 @@ public class GAS_Base : ModuleRules
 			"UMG"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { "AIModule" });
 		
 	}
 }

@@ -50,6 +50,15 @@ void AGFW_BaseCharacter::HandleRespawn()
 	bAlive = true;
 }
 
+void AGFW_BaseCharacter::ResetAttributes()
+{
+	checkf(IsValid(ResetAttributesEffect), TEXT("ResetAttributesEffect not set."));
+
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(ResetAttributesEffect, 1.f, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
 void AGFW_BaseCharacter::GiveStartupAbilities()
 {
 	if (!IsValid(GetAbilitySystemComponent())) return;
@@ -67,6 +76,15 @@ void AGFW_BaseCharacter::InitAttributes() const
 
 	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
 	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(InitAttributesEffect, 1.f, ContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
+void AGFW_BaseCharacter::SetIdentity() const
+{
+	checkf(IsValid(SetIdentityEffect), TEXT("SetIdentityEffect not set."));
+
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(SetIdentityEffect, 1.f, ContextHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
 

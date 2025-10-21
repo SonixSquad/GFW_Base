@@ -35,13 +35,22 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GFW|Death")
 	virtual void HandleRespawn();
+
+	UFUNCTION(BlueprintCallable, Category = "GFW|Attributes")
+	void ResetAttributes();
+
+	UPROPERTY(EditAnywhere, Category = "GFW|AI")
+	float SearchRange{1000.f};
+	
 protected:
 
 	void GiveStartupAbilities();
 	void InitAttributes() const;
-
+	void SetIdentity() const;
+	
 	void OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData);
 	virtual void HandleDeath();
+	
 private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GFW|Abilities")
@@ -50,7 +59,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "GFW|Effects")
 	TSubclassOf<UGameplayEffect> InitAttributesEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "GFW|Effects")
+	TSubclassOf<UGameplayEffect> ResetAttributesEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GFW|Effects")
+	TSubclassOf<UGameplayEffect> SetIdentityEffect;
+	
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Replicated)
 	bool bAlive = true;
+
+	
 };
 

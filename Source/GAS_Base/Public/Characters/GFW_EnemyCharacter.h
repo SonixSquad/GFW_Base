@@ -20,7 +20,8 @@ public:
 	AGFW_EnemyCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UAttributeSet* GetAttributeSet() const override;
-	
+
+	void StopMovementUntilLanded();
 protected:
 
 	virtual void BeginPlay() override;
