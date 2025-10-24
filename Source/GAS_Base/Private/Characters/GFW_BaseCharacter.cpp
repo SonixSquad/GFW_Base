@@ -6,6 +6,11 @@
 #include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 
+namespace GFWTags
+{
+	const FName Player = FName("Player");
+}
+
 AGFW_BaseCharacter::AGFW_BaseCharacter()
 {
 	

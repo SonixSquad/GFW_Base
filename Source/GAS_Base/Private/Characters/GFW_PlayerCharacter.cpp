@@ -43,6 +43,8 @@ AGFW_PlayerCharacter::AGFW_PlayerCharacter()
 	TP_Cam = CreateDefaultSubobject<UCameraComponent>("TP_Cam");
 	TP_Cam->SetupAttachment(TP_CamBoom, USpringArmComponent::SocketName);
 	TP_Cam->bUsePawnControlRotation = false;
+
+	Tags.Add(GFWTags::Player);
 }
 
 UAbilitySystemComponent* AGFW_PlayerCharacter::GetAbilitySystemComponent() const

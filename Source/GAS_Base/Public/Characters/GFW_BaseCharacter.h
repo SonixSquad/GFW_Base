@@ -7,6 +7,11 @@
 #include "GameFramework/Character.h"
 #include "GFW_BaseCharacter.generated.h"
 
+namespace GFWTags
+{
+	extern GAS_BASE_API const FName Player;
+}
+
 struct FOnAttributeChangeData;
 class UAttributeSet;
 class UGameplayAbility;
@@ -39,7 +44,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GFW|Attributes")
 	void ResetAttributes();
 
-	UPROPERTY(EditAnywhere, Category = "GFW|AI")
+	UPROPERTY(EditAnywhere, Category = "GFW|AI") 
 	float SearchRange{1000.f};
 	
 protected:
