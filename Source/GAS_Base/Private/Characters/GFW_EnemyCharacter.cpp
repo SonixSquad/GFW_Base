@@ -3,6 +3,7 @@
 
 #include "Characters/GFW_EnemyCharacter.h"
 
+#include "AIController.h"
 #include "AbilitySystem/GFW_ASC.h"
 #include "AbilitySystem/Attributes/GFW_AttributeSet.h"
 
@@ -61,5 +62,12 @@ void AGFW_EnemyCharacter::BeginPlay()
 	GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GFW_AttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 }
 
+void AGFW_EnemyCharacter::HandleDeath()
+{
+	Super::HandleDeath();
 
+	AAIController* AIController = GetController<AAIController>();
+	if (!IsValid(AIController)) return;
+	AIController->StopMovement();
+}
 

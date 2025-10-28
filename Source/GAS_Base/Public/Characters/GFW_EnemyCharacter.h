@@ -35,6 +35,8 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	virtual void HandleDeath() override;
+	
 private:
 
 	UPROPERTY(VisibleAnywhere, Category = "GFW|AbilitySystem")

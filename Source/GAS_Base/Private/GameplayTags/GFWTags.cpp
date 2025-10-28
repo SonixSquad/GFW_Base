@@ -9,6 +9,7 @@ namespace GFWTags
 	namespace SetByCaller
 	{
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Projectile, "GFWTags.SetByCaller.Projectile", "Tag for Projectile")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(HealPad, "GFWTags.SetByCaller.HealPad", "Tag for HealPad")
 	}
 	
 	namespace GFWAbilities

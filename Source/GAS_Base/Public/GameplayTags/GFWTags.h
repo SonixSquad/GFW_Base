@@ -11,6 +11,7 @@ namespace GFWTags
 	namespace SetByCaller
 	{
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(HealPad);
 	}
 	
 	namespace GFWAbilities

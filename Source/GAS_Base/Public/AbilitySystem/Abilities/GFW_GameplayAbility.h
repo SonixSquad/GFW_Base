@@ -16,6 +16,13 @@ class GAS_BASE_API UGFW_GameplayAbility : public UGameplayAbility
 
 public:
 
+    UGFW_GameplayAbility();
+
+    virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+        const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr,
+        const FGameplayTagContainer* TargetTags = nullptr,
+        FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
+
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 		FGameplayAbilityActorInfo* ActorInfo, const
 		FGameplayAbilityActivationInfo ActivationInfo, const
